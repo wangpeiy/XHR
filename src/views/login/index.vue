@@ -62,7 +62,7 @@ export default {
       isShowPassword: false,
       loading: false,
       loginForm: {
-        mobile: '13800000002',
+        mobile: '13800000001',
         password: '123456'
       },
       rules: {
