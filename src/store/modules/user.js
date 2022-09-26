@@ -10,7 +10,7 @@ const mutations = {
 const actions = {
   async loginAction({ commit }, loginForm) {
     // 接口
-    const { data } = await loginAPI(loginForm)
+    const data = await loginAPI(loginForm)
     // 调用 SET_TOKEN 函数 设置 token
     commit('SET_TOKEN', data)
   }
