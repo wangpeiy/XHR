@@ -1,7 +1,8 @@
 import { loginAPI, getUserInfoAPI, getUserDetailByIdAPI } from '@/api'
 const state = {
   token: null,
-  userInfo: {}
+  userInfo: {},
+  hrsaasTime: 0
 }
 const mutations = {
   // 设置token
@@ -15,6 +16,14 @@ const mutations = {
   // 清空用户信息
   REMOVE_USER_INFO(state) {
     state.userInfo = {}
+  },
+  // 清空token
+  REMOVE_TOKEN(state) {
+    state.token = null
+  },
+  // 设置获取到token的时间
+  SET_HRSAAS_TIME(state, hrsaasTime) {
+    state.hrsaasTime = hrsaasTime // 属于时间1 获取到token的时间
   }
 }
 const actions = {
@@ -24,6 +33,7 @@ const actions = {
     const data = await loginAPI(loginForm)
     // 调用 SET_TOKEN 函数 设置 token
     commit('SET_TOKEN', data)
+    commit('SET_HRSAAS_TIME', new Date().getTime())
   },
 
   // 获取用户信息API
@@ -36,6 +46,11 @@ const actions = {
     const result = { ...data1, ...data2 }
     commit('SET_USER_INFO', result)
     return JSON.parse(JSON.stringify(result))
+  },
+
+  logout({ commit }) {
+    commit('REMOVE_USER_INFO')
+    commit('REMOVE_TOKEN')
   }
 }
 
