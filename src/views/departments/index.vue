@@ -1,15 +1,15 @@
 <template>
-  <div class="departments-container">
+  <div v-loading="loading" class="departments-container">
     <el-card>
-      <TreeTools :tree-node="company" :is-root="false" @addDept="handleAddDept" />
+      <TreeTools :tree-node="company" :is-root="false" @addDept="handleAddDept" @editDept="editDept" />
     </el-card>
     <!--放置一个属性   这里的props和我们之前学习的父传子 的props没关系-->
     <el-tree :data="departs" :props="defaultProps" :default-expand-all="true">
-      <TreeTools slot-scope="{data}" :tree-node="data" @addDept="handleAddDept" />
+      <TreeTools slot-scope="{data}" :tree-node="data" @addDept="handleAddDept" @editDept="editDept" @refreshList="getDepartments" />
     </el-tree>
 
     <!-- 放置新增弹层组件  -->
-    <add-dept :show-dialog.sync="showDialog" :tree-node="currentNode" />
+    <add-dept ref="addDept" :show-dialog.sync="showDialog" :tree-node="currentNode" />
   </div>
 </template>
 
@@ -32,21 +32,36 @@ export default {
         label: 'name'
       },
       showDialog: false,
-      currentNode: {}
+      currentNode: {},
+      loading: false
     }
   },
   created() { this.getDepartments() },
   methods: {
     async getDepartments() {
-      const { depts, companyManage, companyName } = await getDepartmentsAPI()
-      console.log(depts)
-      this.departs = tranListToTreeData(depts, '')
-      this.company = { name: companyName, manager: companyManage, id: '' }
+      try {
+        this.loading = true
+        const { depts, companyManage, companyName } = await getDepartmentsAPI()
+        console.log(depts)
+        this.departs = tranListToTreeData(depts, '')
+        this.company = { name: companyName, manager: companyManage, id: '' }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.loading = false
+      }
     },
     // 新增部门
     handleAddDept(node) {
       this.showDialog = true
       this.currentNode = node
+    },
+    // 编辑部门
+    editDept(node) {
+      this.showDialog = true
+      this.currentNode = { ...node }
+      this.$refs.addDept.formData = { ...node }
+      console.log(node)
     }
   }
 }
