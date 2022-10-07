@@ -22,6 +22,10 @@ Object.keys(directives).forEach(ele => { // 循环注册自定义事件
   Vue.directive(ele, directives[ele])
 })
 
+import components from '@/components'
+// Vue.use(导出的对象)
+Vue.use(components)
+
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
