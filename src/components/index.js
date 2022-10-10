@@ -17,8 +17,15 @@ console.log('根据路径查找模块', requireComponent('./PageTools/index.vue'
 
 const components = requireComponent.keys().map(Element => requireComponent(Element))
 console.log('components', components)
+
+// 导入所有的过滤器
+import * as filters from '@/filters'
 // 也可以使用导出函数的方式
 export default (Vue) => {
+  // 循环注册组件
   components.forEach(Element => Vue.component(Element.default.name, Element.default))
+  // 循环注册过滤器
+  // Vue.filter('过滤器名称',过滤器的方法)
+  Object.keys(filters).forEach(key => Vue.filter(key, filters[key]))
 }
 
