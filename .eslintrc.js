@@ -194,6 +194,7 @@ module.exports = {
       objectsInObjects: false
     }],
     'array-bracket-spacing': [2, 'never'],
-    'vue/prop-name-casing':0
+    'vue/prop-name-casing': 0,
+    'camelcase':0
   }
 }
