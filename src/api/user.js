@@ -20,3 +20,17 @@ export const getUserDetailByIdAPI = (id) => {
     url: `/sys/user/${id}`
   })
 }
+
+/**
+ * @ 保存用户信息
+ * @
+ * @ param {Object} data
+ * @ returns Promise
+ */
+export const saveUserDetailByIdAPI = (data) => {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'put',
+    data
+  })
+}
